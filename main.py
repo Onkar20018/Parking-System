@@ -2,7 +2,7 @@ import cv2
 import pickle
 import cvzone
 import numpy as np
-
+from collections import defaultdict
 # Video feed
 cap = cv2.VideoCapture('carPark.mp4')
 

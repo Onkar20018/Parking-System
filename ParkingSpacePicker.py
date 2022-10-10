@@ -1,6 +1,6 @@
 import cv2
 import pickle
-
+from collections import defaultdict
 width, height = 107, 48
 
 try:
@@ -10,10 +10,8 @@ except:
     posList = []
 
 
-
-
 def mouseClick(events, x, y, flags, params):
-    
+
     if events == cv2.EVENT_LBUTTONDOWN:
         posList.append((x, y))
 
@@ -36,6 +34,10 @@ while True:
     cv2.imshow("Image", img)
     cv2.setMouseCallback("Image", mouseClick)
     if cv2.waitKey(10) & 0xFF == ord('d'):  # 0xFF is used to check if the key is pressed
-        for i, pos in enumerate(posList):
-            print(i, " ")
+        newlist = posList
+        print("The Value : " + str(newlist))
+        temp = defaultdict(lambda: len(temp))
+        UniqueID = [temp[ele] for ele in newlist]
+        print()
+        print("The ID : " + str(UniqueID))
         break
