@@ -1,3 +1,4 @@
+
 import cv2
 import pickle
 
@@ -9,14 +10,23 @@ try:
 except:
     posList = []
 
+try:
+    with open('CarParkPos2', 'rb') as f:
+        posDict = pickle.load(f)
+except:
+    posDict = {}
 
+k = 0
 
 
 def mouseClick(events, x, y, flags, params):
-    
+    global k
     if events == cv2.EVENT_LBUTTONDOWN:
         posList.append((x, y))
-
+        
+        
+        posDict[k] = [(x, y)]
+        k+=1
     if events == cv2.EVENT_RBUTTONDOWN:
         for i, pos in enumerate(posList):
             x1, y1 = pos
@@ -25,6 +35,8 @@ def mouseClick(events, x, y, flags, params):
 
     with open('CarParkPos', 'wb') as f:
         pickle.dump(posList, f)
+    with open('CarParkPos2', 'wb') as f:
+        pickle.dump(posDict, f)
 
 
 while True:
@@ -36,6 +48,7 @@ while True:
     cv2.imshow("Image", img)
     cv2.setMouseCallback("Image", mouseClick)
     if cv2.waitKey(10) & 0xFF == ord('d'):  # 0xFF is used to check if the key is pressed
-        for i, pos in enumerate(posList):
-            print(i, " ")
+        print(len(posDict))
+        for i, pos in enumerate(posDict):
+            print(i, pos)
         break

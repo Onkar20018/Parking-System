@@ -1,3 +1,4 @@
+import enum
 import cv2
 import pickle
 import cvzone
@@ -8,17 +9,45 @@ cap = cv2.VideoCapture('carPark.mp4')
 
 with open('CarParkPos', 'rb') as f:
     posList = pickle.load(f)
-
+with open('CarParkPos2', 'rb') as f:
+    posDict = pickle.load(f)
 
 width, height = 107, 48
 
 
+# def checkParkingSpace(imgPro):
+#     spaceCounter = 0
+
+#     for pos in posList:
+#         x, y = pos
+
+#         imgCrop = imgPro[y:y + height, x:x + width]
+#         # cv2.imshow(str(x * y), imgCrop)
+#         count = cv2.countNonZero(imgCrop)
+
+#         if count < 900:
+#             color = (0, 255, 0)  # GREEN
+#             thickness = 5
+#             spaceCounter += 1
+#         else:
+#             color = (0, 0, 255)  # RED
+#             thickness = 2
+
+#         cv2.rectangle(img, pos, (pos[0] + width,
+#                       pos[1] + height), color, thickness)
+#         cvzone.putTextRect(img, str(count), (x, y + height - 3), scale=1,
+#                            thickness=2, offset=0, colorR=color)
 def checkParkingSpace(imgPro):
     spaceCounter = 0
-
-    for pos in posList:
-        x, y = pos
-
+    print(len(posDict))
+    for i, pos in enumerate(posDict):
+        k = pos
+        k=str(k)
+        d=posDict[k]
+        x=d[0]
+        y=d[1]
+        k=int(k)
+        
         imgCrop = imgPro[y:y + height, x:x + width]
         # cv2.imshow(str(x * y), imgCrop)
         count = cv2.countNonZero(imgCrop)
