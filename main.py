@@ -4,7 +4,7 @@ import cvzone
 import numpy as np
 from collections import defaultdict
 
-from ParkingSpacePicker import temp
+from ParkingSpacePicker import temps
 # Video feed
 cap = cv2.VideoCapture('carPark.mp4')
 
@@ -12,9 +12,11 @@ with open('CarParkPos', 'rb') as f:
     posList = pickle.load(f)
 
 with open('UniqueID', 'rb') as f:
-        UniqueID = pickle.load(f)
+    UniqueID = pickle.load(f)
 
 width, height = 107, 48
+
+counter = set()
 
 
 def checkParkingSpace(imgPro):
@@ -22,7 +24,7 @@ def checkParkingSpace(imgPro):
 
     for pos in posList:
         x, y = pos
-  
+
         imgCrop = imgPro[y:y + height, x:x + width]
         # cv2.imshow(str(x * y), imgCrop)
         count = cv2.countNonZero(imgCrop)
@@ -31,7 +33,12 @@ def checkParkingSpace(imgPro):
             color = (0, 255, 0)  # GREEN
             thickness = 5
             spaceCounter += 1
-            print("Empty at ", temp[pos])
+            if temps[pos] in counter:
+                continue
+            else:
+                counter.add(temps[pos])
+                print("EMPTY AT :", temps[pos])
+
         else:
             color = (0, 0, 255)  # RED
             thickness = 2
@@ -66,4 +73,5 @@ while True:
     #cv2.imshow("ImageMed", imgMedian)
     #cv2.imshow("imgDilate", imgDilate)
     if cv2.waitKey(1) & 0xFF == ord('d'):  # 0xFF is used to check if the key is pressed
+        print("Empty are :", counter) 
         break

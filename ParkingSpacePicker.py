@@ -37,9 +37,9 @@ while True:
     if cv2.waitKey(10) & 0xFF == ord('d'):  # 0xFF is used to check if the key is pressed
         newlist = posList
         print("The Value : " + str(newlist))
-        temp = defaultdict(lambda: len(temp))
+        temps = defaultdict(lambda: len(temps))
 
-        UniqueID = [temp[ele] for ele in newlist]
+        UniqueID = [temps[ele] for ele in newlist]
         print()
         print("The ID : " + str(UniqueID))
         with open('UniqueID', 'wb') as f:
