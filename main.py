@@ -3,12 +3,16 @@ import pickle
 import cvzone
 import numpy as np
 from collections import defaultdict
+
+from ParkingSpacePicker import temp
 # Video feed
 cap = cv2.VideoCapture('carPark.mp4')
 
 with open('CarParkPos', 'rb') as f:
     posList = pickle.load(f)
 
+with open('UniqueID', 'rb') as f:
+        UniqueID = pickle.load(f)
 
 width, height = 107, 48
 
@@ -18,7 +22,7 @@ def checkParkingSpace(imgPro):
 
     for pos in posList:
         x, y = pos
-
+  
         imgCrop = imgPro[y:y + height, x:x + width]
         # cv2.imshow(str(x * y), imgCrop)
         count = cv2.countNonZero(imgCrop)
@@ -27,6 +31,7 @@ def checkParkingSpace(imgPro):
             color = (0, 255, 0)  # GREEN
             thickness = 5
             spaceCounter += 1
+            print("Empty at ", temp[pos])
         else:
             color = (0, 0, 255)  # RED
             thickness = 2

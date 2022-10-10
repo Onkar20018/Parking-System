@@ -1,3 +1,4 @@
+from enum import unique
 import cv2
 import pickle
 from collections import defaultdict
@@ -37,7 +38,11 @@ while True:
         newlist = posList
         print("The Value : " + str(newlist))
         temp = defaultdict(lambda: len(temp))
+
         UniqueID = [temp[ele] for ele in newlist]
         print()
         print("The ID : " + str(UniqueID))
+        with open('UniqueID', 'wb') as f:
+            pickle.dump(UniqueID, f)
+
         break
