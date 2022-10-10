@@ -10,7 +10,6 @@ with open('CarParkPos', 'rb') as f:
     posList = pickle.load(f)
 
 
-
 width, height = 107, 48
 
 
@@ -52,7 +51,7 @@ while True:
         imgBlur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
     imgMedian = cv2.medianBlur(imgThreshold, 5)
     kernel = np.ones((3, 3), np.uint8)
-   
+
     imgDilate = cv2.dilate(imgMedian, kernel, iterations=1)
 
     checkParkingSpace(imgDilate)

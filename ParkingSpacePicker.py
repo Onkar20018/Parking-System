@@ -8,9 +8,12 @@ try:
         posList = pickle.load(f)
 except:
     posList = []
-    
-def mouseClick(events, x, y, flags, params):
 
+
+
+
+def mouseClick(events, x, y, flags, params):
+    
     if events == cv2.EVENT_LBUTTONDOWN:
         posList.append((x, y))
 
