@@ -33,12 +33,10 @@ def checkParkingSpace(imgPro):
             color = (0, 255, 0)  # GREEN
             thickness = 5
             spaceCounter += 1
-            if temps[pos] in counter:
-                continue
-            else:
+            if temps[pos] not in counter:
                 counter.add(temps[pos])
-                print("EMPTY AT :", temps[pos])
-
+                print("Empty at ",temps[pos])
+             
         else:
             color = (0, 0, 255)  # RED
             thickness = 2
@@ -73,5 +71,5 @@ while True:
     #cv2.imshow("ImageMed", imgMedian)
     #cv2.imshow("imgDilate", imgDilate)
     if cv2.waitKey(1) & 0xFF == ord('d'):  # 0xFF is used to check if the key is pressed
-        print("Empty are :", counter) 
+        print("Empty are :", counter)
         break
