@@ -35,8 +35,8 @@ def checkParkingSpace(imgPro):
             spaceCounter += 1
             if temps[pos] not in counter:
                 counter.add(temps[pos])
-                print("Empty at ",temps[pos])
-             
+                print("Empty at ", temps[pos])
+
         else:
             color = (0, 0, 255)  # RED
             thickness = 2
@@ -44,8 +44,13 @@ def checkParkingSpace(imgPro):
         cv2.rectangle(img, pos, (pos[0] + width,
                       pos[1] + height), color, thickness)
         cvzone.putTextRect(img, str(count), (x, y + height - 3), scale=1,
-                           thickness=2, offset=0, colorR=color)
-
+                           thickness=1, offset=0, colorR=color)
+        if temps[pos] in counter:
+            cvzone.putTextRect(img, "Free", (x+width-40, y + height-34), scale=1,
+                               thickness=1, offset=0, colorR=color)
+        else:
+            cvzone.putTextRect(img, "Parked", (x+width-55, y + height-34), scale=1,
+                               thickness=1, offset=0, colorR=color)
     cvzone.putTextRect(img, f'Free: {spaceCounter}/{len(posList)}', (100, 50), scale=3,
                        thickness=5, offset=20, colorR=(0, 200, 0))
 
