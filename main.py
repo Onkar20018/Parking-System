@@ -6,7 +6,7 @@ from collections import defaultdict
 
 from ParkingSpacePicker import temps
 # Video feed
-cap = cv2.VideoCapture('carPark.mp4')
+cap = cv2.VideoCapture('carPark_Reverse.mp4')
 
 with open('CarParkPos', 'rb') as f:
     posList = pickle.load(f)
@@ -17,6 +17,7 @@ with open('UniqueID', 'rb') as f:
 width, height = 107, 48
 
 counter = set()
+colorBlack = (0, 0, 0)
 
 
 def checkParkingSpace(imgPro):
@@ -31,7 +32,7 @@ def checkParkingSpace(imgPro):
 
         if count < 900:
             color = (0, 255, 0)  # GREEN
-            thickness = 5
+            thickness = 3
             spaceCounter += 1
             if temps[pos] not in counter:
                 counter.add(temps[pos])
@@ -39,18 +40,20 @@ def checkParkingSpace(imgPro):
 
         else:
             color = (0, 0, 255)  # RED
-            thickness = 2
+            thickness = 3
+            if temps[pos]  in counter:
+                counter.remove(temps[pos])
 
         cv2.rectangle(img, pos, (pos[0] + width,
                       pos[1] + height), color, thickness)
         cvzone.putTextRect(img, str(count), (x, y + height - 3), scale=1,
-                           thickness=1, offset=0, colorR=color)
+                           thickness=1, offset=0, colorR=colorBlack)
         if temps[pos] in counter:
             cvzone.putTextRect(img, "Free", (x+width-40, y + height-34), scale=1,
-                               thickness=1, offset=0, colorR=color)
+                               thickness=1, offset=0, colorR=colorBlack)
         else:
-            cvzone.putTextRect(img, "Parked", (x+width-55, y + height-34), scale=1,
-                               thickness=1, offset=0, colorR=color)
+            cvzone.putTextRect(img, "Parked", (x+width-60, y + height-34), scale=1,
+                               thickness=1, offset=0, colorR=colorBlack)
     cvzone.putTextRect(img, f'Free: {spaceCounter}/{len(posList)}', (100, 50), scale=3,
                        thickness=5, offset=20, colorR=(0, 200, 0))
 
