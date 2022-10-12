@@ -6,7 +6,8 @@ from collections import defaultdict
 
 from ParkingSpacePicker import temps
 # Video feed
-cap = cv2.VideoCapture('carPark_Reverse.mp4')
+cap = cv2.VideoCapture('carPark.mp4')
+# cap = cv2.VideoCapture('carPark_Reverse.mp4')
 
 with open('CarParkPos', 'rb') as f:
     posList = pickle.load(f)
@@ -41,18 +42,20 @@ def checkParkingSpace(imgPro):
         else:
             color = (0, 0, 255)  # RED
             thickness = 3
-            if temps[pos]  in counter:
+            if temps[pos] in counter:
                 counter.remove(temps[pos])
-
+        ID = str(temps[pos])
         cv2.rectangle(img, pos, (pos[0] + width,
                       pos[1] + height), color, thickness)
         cvzone.putTextRect(img, str(count), (x, y + height - 3), scale=1,
                            thickness=1, offset=0, colorR=colorBlack)
+        cvzone.putTextRect(img, ID, (x+1, y + height - 34), scale=1,
+                           thickness=2, offset=0, colorR=colorBlack)
         if temps[pos] in counter:
-            cvzone.putTextRect(img, "Free", (x+width-40, y + height-34), scale=1,
+            cvzone.putTextRect(img, "Free", (x+width-40, y + height), scale=1,
                                thickness=1, offset=0, colorR=colorBlack)
         else:
-            cvzone.putTextRect(img, "Parked", (x+width-60, y + height-34), scale=1,
+            cvzone.putTextRect(img, "Parked", (x+width-60, y + height-3), scale=1,
                                thickness=1, offset=0, colorR=colorBlack)
     cvzone.putTextRect(img, f'Free: {spaceCounter}/{len(posList)}', (100, 50), scale=3,
                        thickness=5, offset=20, colorR=(0, 200, 0))
