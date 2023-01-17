@@ -3,10 +3,11 @@ import pickle
 import cvzone
 import numpy as np
 from collections import defaultdict
-
+from database import CarInfo
 from ParkingSpacePicker import temps
+import json
 # Video feed
-cap = cv2.VideoCapture('carPark.mp4')
+cap = cv2.VideoCapture('carPark_Reverse.mp4')
 # cap = cv2.VideoCapture('carPark_Reverse.mp4')
 
 with open('CarParkPos', 'rb') as f:
@@ -17,33 +18,82 @@ with open('UniqueID', 'rb') as f:
 
 width, height = 107, 48
 
-counter = set()
+counter = set()  # Creating a Set in Python , Now Counter is a Set
+# counterprev = set()  # Creating a Set in Python , Now Counter is a Set
 colorBlack = (0, 0, 0)
+
+# flag = false
+####################################################################################################################
 
 
 def checkParkingSpace(imgPro):
     spaceCounter = 0
-
     for pos in posList:
         x, y = pos
 
         imgCrop = imgPro[y:y + height, x:x + width]
         # cv2.imshow(str(x * y), imgCrop)
         count = cv2.countNonZero(imgCrop)
-
+        flag = False
         if count < 900:
             color = (0, 255, 0)  # GREEN
             thickness = 3
             spaceCounter += 1
+            # if counter.difference(counter) not None:
+            # print(counter)
+            # This is for Adding when Space is not Vacant
             if temps[pos] not in counter:
                 counter.add(temps[pos])
-                print("Empty at ", temps[pos])
+                # print("Empty at ", temps[pos])
+                # print(counter)
+                # di = {}
+                # print(temps[pos], type(temps[pos]))
+                # Name = str(temps[pos])
+                # print(Name, type(Name))
+                # _id = "_id"
+
+                # di.update({Name: True})
+
+                # print(di)
+                # s = json.dumps(di)
+                # print(s)
+                # print(CarInfo.find(di))
+                print(counter, ":Green")
+                CarInfo.drop()
+                strCounter = set()
+                bools = []
+                for i in counter:
+                    bools.append(True)
+                    strCounter.add(str(i))
+                    # print(type(str(i)),"ss")
+                    # print(strCounter, "SSSS")
+                di = dict(zip(strCounter, bools))
+                CarInfo.insert_one(di)
 
         else:
             color = (0, 0, 255)  # RED
             thickness = 3
+
+          # This is for Removing when Space is Vacant
             if temps[pos] in counter:
                 counter.remove(temps[pos])
+                # di = {}
+                # Name = str(temps[pos])
+                # di.update({Name: True})
+                # print(counter)
+                # if (CarInfo.find(di)):
+                #     CarInfo.delete_many(di)
+                #     di.update({Name: False})
+                #     CarInfo.insert_one(di)
+                # print(counter, ":Red")
+                CarInfo.drop()
+                strCounter = set()
+                bools = []
+                for i in counter:
+                    bools.append(True)
+                    strCounter.add(str(i))
+                di = dict(zip(strCounter, bools))
+                CarInfo.insert_one(di)
         ID = str(temps[pos])
         cv2.rectangle(img, pos, (pos[0] + width,
                       pos[1] + height), color, thickness)
@@ -57,8 +107,16 @@ def checkParkingSpace(imgPro):
         else:
             cvzone.putTextRect(img, "Parked", (x+width-60, y + height-3), scale=1,
                                thickness=1, offset=0, colorR=colorBlack)
+
+    # print(spaceCounter)
+    # if (counter != counterprev):
+    #     print(counterprev)
+    #     counterprev = counter
+    #     print(counter)
+
     cvzone.putTextRect(img, f'Free: {spaceCounter}/{len(posList)}', (100, 50), scale=3,
                        thickness=5, offset=20, colorR=(0, 200, 0))
+####################################################################################################################
 
 
 while True:
@@ -76,11 +134,12 @@ while True:
     imgDilate = cv2.dilate(imgMedian, kernel, iterations=1)
 
     checkParkingSpace(imgDilate)
+
     cv2.imshow("Image", img)
-    #cv2.imshow("ImageBlur", imgBlur)
-    #cv2.imshow("ImageThresh", imgThreshold)
-    #cv2.imshow("ImageMed", imgMedian)
-    #cv2.imshow("imgDilate", imgDilate)
-    if cv2.waitKey(1) & 0xFF == ord('d'):  # 0xFF is used to check if the key is pressed
-        print("Empty are :", counter)
+    # cv2.imshow("ImageBlur", imgBlur)
+    # cv2.imshow("ImageThresh", imgThreshold)
+    # cv2.imshow("ImageMed", imgMedian)
+    # cv2.imshow("imgDilate", imgDilate)
+    if cv2.waitKey(1) & 0xFF == ord('d'):
+        print("Empty are :", counter, "Total=", len(counter))
         break
