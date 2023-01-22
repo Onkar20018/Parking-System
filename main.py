@@ -20,6 +20,13 @@ width, height = 107, 48
 
 counter = set()  # Creating a Set in Python , Now Counter is a Set
 # counterprev = set()  # Creating a Set in Python , Now Counter is a Set
+li=[]
+xi=[]
+for i in range(68):
+    li.append(i)
+for i in range(len(li)):
+    xi.append(True)
+dicto=dict(zip(li,xi))
 colorBlack = (0, 0, 0)
 
 # flag = false
@@ -39,36 +46,21 @@ def checkParkingSpace(imgPro):
             color = (0, 255, 0)  # GREEN
             thickness = 3
             spaceCounter += 1
-            # if counter.difference(counter) not None:
-            # print(counter)
             # This is for Adding when Space is not Vacant
             if temps[pos] not in counter:
                 counter.add(temps[pos])
-                # print("Empty at ", temps[pos])
-                # print(counter)
-                # di = {}
-                # print(temps[pos], type(temps[pos]))
-                # Name = str(temps[pos])
-                # print(Name, type(Name))
-                # _id = "_id"
+                
+                    
+                                   # print(counter, ":Green")
+                # CarInfo.drop()
+                # strCounter = set()
+                # bools = []
+                # for i in counter:
+                #     bools.append(True)
+                #     strCounter.add(str(i))
 
-                # di.update({Name: True})
-
-                # print(di)
-                # s = json.dumps(di)
-                # print(s)
-                # print(CarInfo.find(di))
-                print(counter, ":Green")
-                CarInfo.drop()
-                strCounter = set()
-                bools = []
-                for i in counter:
-                    bools.append(True)
-                    strCounter.add(str(i))
-                    # print(type(str(i)),"ss")
-                    # print(strCounter, "SSSS")
-                di = dict(zip(strCounter, bools))
-                CarInfo.insert_one(di)
+                # di = dict(zip(strCounter, bools))
+                # CarInfo.insert_one(di)
 
         else:
             color = (0, 0, 255)  # RED
@@ -77,23 +69,16 @@ def checkParkingSpace(imgPro):
           # This is for Removing when Space is Vacant
             if temps[pos] in counter:
                 counter.remove(temps[pos])
-                # di = {}
-                # Name = str(temps[pos])
-                # di.update({Name: True})
-                # print(counter)
-                # if (CarInfo.find(di)):
-                #     CarInfo.delete_many(di)
-                #     di.update({Name: False})
-                #     CarInfo.insert_one(di)
-                # print(counter, ":Red")
-                CarInfo.drop()
-                strCounter = set()
-                bools = []
-                for i in counter:
-                    bools.append(True)
-                    strCounter.add(str(i))
-                di = dict(zip(strCounter, bools))
-                CarInfo.insert_one(di)
+
+                # CarInfo.drop()
+                # strCounter = set()
+                # bools = []
+                # for i in counter:
+                #     bools.append(True)
+                #     strCounter.add(str(i))
+                # di = dict(zip(strCounter, bools))
+                # CarInfo.insert_one(di)
+
         ID = str(temps[pos])
         cv2.rectangle(img, pos, (pos[0] + width,
                       pos[1] + height), color, thickness)
@@ -107,12 +92,6 @@ def checkParkingSpace(imgPro):
         else:
             cvzone.putTextRect(img, "Parked", (x+width-60, y + height-3), scale=1,
                                thickness=1, offset=0, colorR=colorBlack)
-
-    # print(spaceCounter)
-    # if (counter != counterprev):
-    #     print(counterprev)
-    #     counterprev = counter
-    #     print(counter)
 
     cvzone.putTextRect(img, f'Free: {spaceCounter}/{len(posList)}', (100, 50), scale=3,
                        thickness=5, offset=20, colorR=(0, 200, 0))
