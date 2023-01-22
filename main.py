@@ -7,7 +7,7 @@ from database import CarInfo
 from ParkingSpacePicker import temps
 import json
 # Video feed
-cap = cv2.VideoCapture('carPark_Reverse.mp4')
+cap = cv2.VideoCapture('carPark.mp4')
 # cap = cv2.VideoCapture('carPark_Reverse.mp4')
 
 with open('CarParkPos', 'rb') as f:
@@ -51,16 +51,16 @@ def checkParkingSpace(imgPro):
                 counter.add(temps[pos])
                 
                     
-                                   # print(counter, ":Green")
-                # CarInfo.drop()
-                # strCounter = set()
-                # bools = []
-                # for i in counter:
-                #     bools.append(True)
-                #     strCounter.add(str(i))
+                                #    print(counter, ":Green")
+                CarInfo.drop()
+                strCounter = set()
+                bools = []
+                for i in counter:
+                    bools.append(True)
+                    strCounter.add(str(i))
 
-                # di = dict(zip(strCounter, bools))
-                # CarInfo.insert_one(di)
+                di = dict(zip(strCounter, bools))
+                CarInfo.insert_one(di)
 
         else:
             color = (0, 0, 255)  # RED
@@ -70,14 +70,14 @@ def checkParkingSpace(imgPro):
             if temps[pos] in counter:
                 counter.remove(temps[pos])
 
-                # CarInfo.drop()
-                # strCounter = set()
-                # bools = []
-                # for i in counter:
-                #     bools.append(True)
-                #     strCounter.add(str(i))
-                # di = dict(zip(strCounter, bools))
-                # CarInfo.insert_one(di)
+                CarInfo.drop()
+                strCounter = set()
+                bools = []
+                for i in counter:
+                    bools.append(True)
+                    strCounter.add(str(i))
+                di = dict(zip(strCounter, bools))
+                CarInfo.insert_one(di)
 
         ID = str(temps[pos])
         cv2.rectangle(img, pos, (pos[0] + width,
