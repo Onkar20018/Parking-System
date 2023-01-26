@@ -58,7 +58,7 @@ def checkParkingSpace(imgPro):
                 for i in counter:
                     bools.append(True)
                     strCounter.add(str(i))
-
+                print(counter,"Added")
                 di = dict(zip(strCounter, bools))
                 CarInfo.insert_one(di)
 
@@ -67,7 +67,7 @@ def checkParkingSpace(imgPro):
             thickness = 3
 
           # This is for Removing when Space is Vacant
-            if temps[pos] in counter:
+            if temps[pos] in counter:   
                 counter.remove(temps[pos])
 
                 CarInfo.drop()
@@ -77,6 +77,7 @@ def checkParkingSpace(imgPro):
                     bools.append(True)
                     strCounter.add(str(i))
                 di = dict(zip(strCounter, bools))
+                print(counter,"Added")
                 CarInfo.insert_one(di)
 
         ID = str(temps[pos])
