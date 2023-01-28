@@ -53,12 +53,15 @@ def checkParkingSpace(imgPro):
                     
                                 #    print(counter, ":Green")
                 CarInfo.drop()
-                strCounter = set()
+                strCounter = []
                 bools = []
-                for i in counter:
-                    bools.append(True)
-                    strCounter.add(str(i))
-                print(counter,"Added")
+                for i in range(68):
+                    if(i in counter):
+                        bools.append(True)
+                        strCounter.append(str(i))
+                    else:
+                        bools.append(False)
+                        strCounter.append(str(i))
                 di = dict(zip(strCounter, bools))
                 CarInfo.insert_one(di)
 
@@ -71,13 +74,16 @@ def checkParkingSpace(imgPro):
                 counter.remove(temps[pos])
 
                 CarInfo.drop()
-                strCounter = set()
+                strCounter = []
                 bools = []
-                for i in counter:
-                    bools.append(True)
-                    strCounter.add(str(i))
+                for i in range(68):
+                    if(i in counter):
+                        bools.append(True)
+                        strCounter.append(str(i))
+                    else:
+                        bools.append(False)
+                        strCounter.append(str(i))
                 di = dict(zip(strCounter, bools))
-                print(counter,"Added")
                 CarInfo.insert_one(di)
 
         ID = str(temps[pos])
