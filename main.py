@@ -22,7 +22,7 @@ counter = set()  # Creating a Set in Python , Now Counter is a Set
 # counterprev = set()  # Creating a Set in Python , Now Counter is a Set
 li=[]
 xi=[]
-for i in range(68):
+for i in range(69):
     li.append(i)
 for i in range(len(li)):
     xi.append(True)
@@ -55,7 +55,7 @@ def checkParkingSpace(imgPro):
                 CarInfo.drop()
                 strCounter = []
                 bools = []
-                for i in range(68):
+                for i in range(69):
                     if(i in counter):
                         bools.append(True)
                         strCounter.append(str(i))
@@ -76,7 +76,7 @@ def checkParkingSpace(imgPro):
                 CarInfo.drop()
                 strCounter = []
                 bools = []
-                for i in range(68):
+                for i in range(69):
                     if(i in counter):
                         bools.append(True)
                         strCounter.append(str(i))
