@@ -126,6 +126,6 @@ while True:
     # cv2.imshow("ImageThresh", imgThreshold)
     # cv2.imshow("ImageMed", imgMedian)
     # cv2.imshow("imgDilate", imgDilate)
-    if cv2.waitKey(1) & 0xFF == ord('d'):
+    if cv2.waitKey(15) & 0xFF == ord('d'):
         print("Empty are :", counter, "Total=", len(counter))
         break
