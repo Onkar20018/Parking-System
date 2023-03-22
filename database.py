@@ -9,3 +9,6 @@ print(dbs)
 ParkApp = cluster.ParkApp  # Save Database Name
 
 CarInfo = ParkApp.CarInfo # Save Collection Name
+CarInfo2 = ParkApp.CarInfo2 # Save Collection Name
+CarInfo3 = ParkApp.CarInfo3 # Save Collection Name
+

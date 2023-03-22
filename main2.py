@@ -3,26 +3,25 @@ import pickle
 import cvzone
 import numpy as np
 from collections import defaultdict
-from database import CarInfo
-from ParkingSpacePicker import temps
+from database import CarInfo2
+from ParkSpacePick2 import temps
 import json
 # Video feed
-cap = cv2.VideoCapture('carPark.mp4')
+# cap = cv2.VideoCapture('carPark.mp4')
 # cap = cv2.VideoCapture('carPark_Reverse.mp4')
 
-with open('CarParkPos', 'rb') as f:
-    posList = pickle.load(f)
+with open('CarParkPos2', 'rb') as f:
+    posList2 = pickle.load(f)
 
-with open('UniqueID', 'rb') as f:
-    UniqueID = pickle.load(f)
+with open('UniqueID2', 'rb') as f:
+    UniqueID2 = pickle.load(f)
 
-width, height = 107, 48
-
+width, height = 190,100
 counter = set()  # Creating a Set in Python , Now Counter is a Set
 # counterprev = set()  # Creating a Set in Python , Now Counter is a Set
 li=[]
 xi=[]
-for i in range(69):
+for i in range(12):
     li.append(i)
 for i in range(len(li)):
     xi.append(True)
@@ -35,7 +34,7 @@ colorBlack = (0, 0, 0)
 
 def checkParkingSpace(imgPro):
     spaceCounter = 0
-    for pos in posList:
+    for pos in posList2:
         x, y = pos
 
         imgCrop = imgPro[y:y + height, x:x + width]
@@ -52,10 +51,10 @@ def checkParkingSpace(imgPro):
                 
                     
                                 #    print(counter, ":Green")
-                CarInfo.drop()
+                CarInfo2.drop()
                 strCounter = []
                 bools = []
-                for i in range(69):
+                for i in range(12):
                     if(i in counter):
                         bools.append(True)
                         strCounter.append(str(i))
@@ -63,7 +62,7 @@ def checkParkingSpace(imgPro):
                         bools.append(False)
                         strCounter.append(str(i))
                 di = dict(zip(strCounter, bools))
-                CarInfo.insert_one(di)
+                CarInfo2.insert_one(di)
 
         else:
             color = (0, 0, 255)  # RED
@@ -73,10 +72,10 @@ def checkParkingSpace(imgPro):
             if temps[pos] in counter:   
                 counter.remove(temps[pos])
 
-                CarInfo.drop()
+                CarInfo2.drop()
                 strCounter = []
                 bools = []
-                for i in range(69):
+                for i in range(12):
                     if(i in counter):
                         bools.append(True)
                         strCounter.append(str(i))
@@ -84,36 +83,37 @@ def checkParkingSpace(imgPro):
                         bools.append(False)
                         strCounter.append(str(i))
                 di = dict(zip(strCounter, bools))
-                CarInfo.insert_one(di)
+                CarInfo2.insert_one(di)
 
         ID = str(temps[pos])
         cv2.rectangle(img, pos, (pos[0] + width,
                       pos[1] + height), color, thickness)
-        cvzone.putTextRect(img, str(count), (x, y + height - 3), scale=1,
-                           thickness=1, offset=0, colorR=colorBlack)
+        # cvzone.putTextRect(img, str(count), (x, y + height - 200), scale=1,
+        #                    thickness=1, offset=0, colorR=colorBlack)
         cvzone.putTextRect(img, ID, (x+1, y + height - 34), scale=1,
                            thickness=2, offset=0, colorR=colorBlack)
-        if temps[pos] in counter:
-            cvzone.putTextRect(img, "Free", (x+width-40, y + height), scale=1,
-                               thickness=1, offset=0, colorR=colorBlack)
-        else:
-            cvzone.putTextRect(img, "Parked", (x+width-60, y + height-3), scale=1,
-                               thickness=1, offset=0, colorR=colorBlack)
+        # if temps[pos] in counter:
+            # cvzone.putTextRect(img, "Free", (x+width-40, y-310 ), scale=1,
+                            #    thickness=1, offset=0, colorR=colorBlack)
+        # else:
+            # cvzone.putTextRect(img, "Parked", (x+width-60, y-310), scale=1,
+                            #    thickness=1, offset=0, colorR=colorBlack)
 
-    cvzone.putTextRect(img, f'Free: {spaceCounter}/{len(posList)}', (100, 50), scale=3,
-                       thickness=5, offset=20, colorR=(0, 200, 0))
+    cvzone.putTextRect(img, f'Free: {spaceCounter}/{len(posList2)}', (460, 33), scale=1.6,
+                       thickness=2, offset=20, colorR=(0, 200, 0))
 ####################################################################################################################
 
 
 while True:
 
-    if cap.get(cv2.CAP_PROP_POS_FRAMES) == cap.get(cv2.CAP_PROP_FRAME_COUNT):
-        cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
-    success, img = cap.read()
+    # if cap.get(cv2.CAP_PROP_POS_FRAMES) == cap.get(cv2.CAP_PROP_FRAME_COUNT):
+    #     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+    img2 = cv2.imread('IMG2.png')
+    # cv2.imshow("Im",img2)
+    img = cv2.resize(img2, (700, 700))
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     imgBlur = cv2.GaussianBlur(imgGray, (3, 3), 1)
-    imgThreshold = cv2.adaptiveThreshold(
-        imgBlur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
+    imgThreshold = cv2.adaptiveThreshold(imgBlur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
     imgMedian = cv2.medianBlur(imgThreshold, 5)
     kernel = np.ones((3, 3), np.uint8)
 
